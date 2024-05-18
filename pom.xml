@@ -7,6 +7,11 @@
     <groupId>com.platformteam</groupId>
     <artifactId>FannyEAR</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <modules>
+        <module>FannyEJB</module>
+        <module>FannyWeb</module>
+    </modules>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
@@ -37,13 +42,13 @@
                         <!-- Modulo Web -->
                         <webModule>
                             <groupId>com.platformteam</groupId>
-                            <artifactId>FannyEAR</artifactId>
+                            <artifactId>FannyWeb</artifactId>
                             <contextRoot>/fanny</contextRoot>
                         </webModule>
                         <!-- Modulo EJB -->
                         <ejbModule>
                             <groupId>com.platformteam</groupId>
-                            <artifactId>your-ejb-artifact</artifactId>
+                            <artifactId>FannyEJB</artifactId>
                         </ejbModule>
                     </modules>
                 </configuration>
