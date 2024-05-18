@@ -1,7 +1,6 @@
 package com.platformteam;
 
 import java.io.IOException;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -13,7 +12,7 @@ import javax.servlet.ServletContext;
 public class TestServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("text/plain");
         resp.getWriter().write("Hello from EJB!\n\n");
         resp.getWriter().write("      ,_,   \n");
@@ -27,6 +26,5 @@ public class TestServlet extends HttpServlet {
         ServletContext context = getServletContext();
         String serverInfo = context.getServerInfo();
         resp.getWriter().write("Application Server: " + serverInfo + "\n");
-
     }
 }
