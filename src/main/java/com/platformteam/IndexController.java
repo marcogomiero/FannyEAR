@@ -23,7 +23,16 @@ public class IndexController {
     }
 
     public static void main(String[] args) throws IOException {
-        NamespaceService namespaceService = new NamespaceService(); // Assumi che esista un costruttore di default
+
+        // Stampa il banner
+        System.out.println("      ,_,   ");
+        System.out.println("     {O,o}  ");
+        System.out.println("     /)__)  ");
+        System.out.println("     ==" + "=\"" + "==");
+        System.out.println("FANNY EAR Edition - A PT Project");
+        System.out.println("Java Version: " + System.getProperty("java.version"));
+
+        NamespaceService namespaceService = new NamespaceService();
         IndexController controller = new IndexController(namespaceService);
 
         // Crea il server HTTP
@@ -52,16 +61,16 @@ public class IndexController {
             String forceHttpCodeParam = getQueryParam(exchange, "forceHttpCode");
 
             Long delay = delayParam != null ? Long.parseLong(delayParam) : null;
-            int forceHttpCode = forceHttpCodeParam != null ? Integer.parseInt(forceHttpCodeParam) : 200;
+            Integer forceHttpCode = forceHttpCodeParam != null ? Integer.parseInt(forceHttpCodeParam) : 200;
 
             long startTime = System.currentTimeMillis();
 
             if (forceHttpCode == 500) {
-                sendResponse(exchange, HttpStatus.INTERNAL_SERVER_ERROR.value(), INTERNAL_SERVER_ERROR_MESSAGE);
+                sendResponse(exchange, 500, INTERNAL_SERVER_ERROR_MESSAGE);
                 return;
             }
             if (forceHttpCode == 502) {
-                sendResponse(exchange, HttpStatus.BAD_GATEWAY.value(), BAD_GATEWAY_MESSAGE);
+                sendResponse(exchange, 502, BAD_GATEWAY_MESSAGE);
                 return;
             }
 
@@ -146,14 +155,13 @@ public class IndexController {
         public void run() {
             // Effettua una chiamata HTTP a /testme
             try {
-                String response = WebClient.create("http://localhost:8080")
-                        .get()
-                        .uri("http://localhost:8080/testme")
-                        .retrieve()
-                        .bodyToMono(String.class)
-                        .block();
-
-                logScheduledCall(response);
+                java.net.URL url = new java.net.URL("http://localhost:8080/testme");
+                try (java.io.InputStream is = url.openStream()) {
+                    java.io.ByteArrayOutputStream os = new java.io.ByteArrayOutputStream();
+                    is.transferTo(os);
+                    String response = os.toString();
+                    logScheduledCall(response);
+                }
             } catch (Exception e) {
                 System.out.println("Error calling /testme: " + e.getMessage());
             }
