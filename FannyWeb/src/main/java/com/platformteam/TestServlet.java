@@ -14,8 +14,6 @@ public class TestServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/plain");
         resp.getWriter().write("Hello from EJB!\n\n");
-
-        // Stampa il banner
         resp.getWriter().write("      ,_,   \n");
         resp.getWriter().write("     {O,o}  \n");
         resp.getWriter().write("     /)__)  \n");
