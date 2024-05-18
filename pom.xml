@@ -9,9 +9,45 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <maven.compiler.source>22</maven.compiler.source>
-        <maven.compiler.target>22</maven.compiler.target>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>4.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- Plugin per creare il file EAR -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-ear-plugin</artifactId>
+                <version>3.3.0</version>
+                <configuration>
+                    <!-- Impostazioni per il file EAR -->
+                    <version>6</version> <!-- Versione del modulo EAR -->
+                    <modules>
+                        <!-- Modulo Web -->
+                        <webModule>
+                            <groupId>com.platformteam</groupId>
+                            <artifactId>FannyEAR</artifactId>
+                            <contextRoot>/fanny</contextRoot>
+                        </webModule>
+                        <!-- Modulo EJB -->
+                        <ejbModule>
+                            <groupId>com.platformteam</groupId>
+                            <artifactId>your-ejb-artifact</artifactId>
+                        </ejbModule>
+                    </modules>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
