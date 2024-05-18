@@ -10,11 +10,26 @@
     </parent>
 
     <artifactId>FannyWeb</artifactId>
+    <packaging>war</packaging>
 
     <properties>
         <maven.compiler.source>22</maven.compiler.source>
         <maven.compiler.target>22</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+    <build>
+        <plugins>
+            <!-- Plugin per creare il file WAR -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.4.0</version>
+                <configuration>
+                    <!-- Configurazioni aggiuntive se necessario -->
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
