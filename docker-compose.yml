@@ -6,9 +6,6 @@ services:
     volumes:
       - ./fanny.war:/opt/jboss/wildfly/standalone/deployments/fanny.war
       - ./node-info.war:/opt/jboss/wildfly/standalone/deployments/node-info.war
-      - ./properties/security_overrides.xml:/opt/jboss/wildfly/standalone/configuration/security_overrides.xml
-      - ./properties/application-users.properties:/opt/jboss/wildfly/standalone/configuration/application-users.properties
-      - ./properties/application-roles.properties:/opt/jboss/wildfly/standalone/configuration/application-roles.properties
     environment:
       JBOSS_MODULESYSTEM_PROP_org.wildfly.security.auth.realm.JBossRealm.password-hashing: CLEAR
       JBOSS_MODULESYSTEM_PROP_org.wildfly.security.auth.mechanism.http.FormBasedAuthenticationMechanism.require-login: false
