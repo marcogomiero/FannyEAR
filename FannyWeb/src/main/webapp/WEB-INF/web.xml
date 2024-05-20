@@ -6,7 +6,15 @@
 
     <display-name>FannyWeb</display-name>
 
-    <!-- Aggiungi eventuali configurazioni di sicurezza qui -->
-    <!-- Per ora, lo lasciamo vuoto -->
+    <!-- Assicura che l'accesso sia permesso a tutte le risorse -->
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Entire Application</web-resource-name>
+            <url-pattern>/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <!-- Nessun ruolo specificato, accesso aperto -->
+        </auth-constraint>
+    </security-constraint>
 
 </web-app>

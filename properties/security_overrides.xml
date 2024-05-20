@@ -1,0 +1,11 @@
+<security-realms>
+    <security-realm name="JBossRealm">
+        <authentication>
+            <local default-user="$local" allowed-users="*"/>
+            <properties path="application-users.properties" relative-to="jboss.server.config.dir"/>
+        </authentication>
+        <authorization>
+            <properties path="application-roles.properties" relative-to="jboss.server.config.dir"/>
+        </authorization>
+    </security-realm>
+</security-realms>
