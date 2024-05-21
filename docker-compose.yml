@@ -5,7 +5,6 @@ services:
     image: quay.io/wildfly/wildfly:latest-jdk21
     volumes:
       - ./fanny.war:/opt/jboss/wildfly/standalone/deployments/fanny.war
-      - ./node-info.war:/opt/jboss/wildfly/standalone/deployments/node-info.war
     environment:
       JBOSS_MODULESYSTEM_PROP_org.wildfly.security.auth.realm.JBossRealm.password-hashing: CLEAR
       JBOSS_MODULESYSTEM_PROP_org.wildfly.security.auth.mechanism.http.FormBasedAuthenticationMechanism.require-login: false
