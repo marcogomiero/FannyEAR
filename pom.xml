@@ -23,12 +23,12 @@
 
 
     <dependencies>
-        <dependency>
+        <!--dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <version>4.0.1</version>
             <scope>provided</scope>
-        </dependency>
+        </dependency-->
 
         <!-- https://mvnrepository.com/artifact/junit/junit -->
         <dependency>
@@ -62,8 +62,8 @@
                 <version>3.3.0</version>
                 <configuration>
                     <version>6</version>
+
                     <modules>
-                        <!-- Modulo Web -->
                         <webModule>
                             <groupId>com.platformteam</groupId>
                             <artifactId>FannyWeb</artifactId>

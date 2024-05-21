@@ -4,4 +4,16 @@
         <welcome-file>jsps/index.htm</welcome-file>
     </welcome-file-list>
 
+    <servlet>
+        <display-name>Fanny Testme Servlet</display-name>
+        <servlet-name>FannyServlet</servlet-name>
+        <servlet-class>com.platformteam.FannyServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>FannyServlet</servlet-name>
+        <url-pattern>/testme</url-pattern>
+    </servlet-mapping>
+
 </web-app>
