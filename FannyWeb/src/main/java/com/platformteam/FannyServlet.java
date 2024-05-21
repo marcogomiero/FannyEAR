@@ -9,7 +9,7 @@ import javax.servlet.ServletContext;
 
 
 @WebServlet("/testme")
-public class TestServlet extends HttpServlet {
+public class FannyServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
