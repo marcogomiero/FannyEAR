@@ -1,5 +1,4 @@
 <web-app>
-    <!-- Definizione dei ruoli -->
     <security-role>
         <role-name>admin</role-name>
     </security-role>
@@ -35,4 +34,9 @@
             <transport-guarantee>NONE</transport-guarantee>
         </user-data-constraint>
     </security-constraint>
+
+    <welcome-file-list>
+        <welcome-file>/WEB-INF/jsps/index.htm</welcome-file>
+    </welcome-file-list>
+
 </web-app>
