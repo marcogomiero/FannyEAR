@@ -1,14 +1,11 @@
 package com.platformteam;
 
 import java.io.IOException;
-
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
-
 
 @WebServlet("/testme")
 public class FannyServlet extends HttpServlet {
@@ -24,7 +21,6 @@ public class FannyServlet extends HttpServlet {
         resp.getWriter().write("FANNY EAR Edition - A PT Project\n");
         resp.getWriter().write("Java Version: " + System.getProperty("java.version") + "\n");
 
-        // Ottieni informazioni sull'application server
         ServletContext context = getServletContext();
         String serverInfo = context.getServerInfo();
         resp.getWriter().write("Application Server: " + serverInfo + "\n");
