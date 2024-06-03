@@ -11,9 +11,4 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
 
-    <servlet-mapping>
-        <servlet-name>FannyServlet</servlet-name>
-        <url-pattern>/testme</url-pattern>
-    </servlet-mapping>
-
 </web-app>

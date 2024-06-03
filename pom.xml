@@ -27,7 +27,6 @@
                 <version>3.3.0</version>
                 <configuration>
                     <version>6</version>
-
                     <modules>
                         <webModule>
                             <groupId>com.platformteam</groupId>
