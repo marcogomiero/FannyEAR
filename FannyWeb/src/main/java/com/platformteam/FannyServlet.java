@@ -21,9 +21,8 @@ public class FannyServlet extends HttpServlet {
         if (delayParam != null) {
             try {
                 delay = Integer.parseInt(delayParam);
-            } catch (NumberFormatException e) {
-                // Ignora il parametro se non è un numero valido
-                delay = 0;
+            }
+            catch (NumberFormatException ignored) {
             }
         }
         if (delay > 0) {
@@ -54,7 +53,7 @@ public class FannyServlet extends HttpServlet {
     @Scheduled(fixedRate = 180000)
     public void scheduledCallTestme() {
         WebClient webClient = WebClient.create("http://localhost:8080");
-        Mono<String> response = webClient.get()
+        webClient.get()
                 .uri("http://localhost:8080/testme")
                 .retrieve()
                 .bodyToMono(String.class);
