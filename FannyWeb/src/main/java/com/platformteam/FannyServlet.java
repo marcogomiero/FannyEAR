@@ -15,6 +15,26 @@ public class FannyServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+
+        String delayParam = req.getParameter("delay");
+        int delay = 0;
+        if (delayParam != null) {
+            try {
+                delay = Integer.parseInt(delayParam);
+            } catch (NumberFormatException e) {
+                // Ignora il parametro se non è un numero valido
+                delay = 0;
+            }
+        }
+        if (delay > 0) {
+            try {
+                Thread.sleep(delay);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                throw new IOException("Thread was interrupted", e);
+            }
+        }
+
         resp.setContentType("text/plain");
         resp.getWriter().write("      ,_,   \n");
         resp.getWriter().write("     {O,o}  \n");
@@ -27,6 +47,8 @@ public class FannyServlet extends HttpServlet {
         String serverInfo = context.getServerInfo();
         resp.getWriter().write("Application Server: " + serverInfo + "\n");
         resp.getWriter().write("SpringBoot Version: " + org.springframework.boot.SpringBootVersion.getVersion());
+        resp.getWriter().write("\n-> You left me alone for: " + delay + " ms; (you know, this is the delay)\n");
+        resp.getWriter().write("-> Feel free to ask for more parameters.\n");
     }
 
     @Scheduled(fixedRate = 180000)
