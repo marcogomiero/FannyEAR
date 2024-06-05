@@ -1,3 +1,13 @@
+// PUT /cache/put
+// curl -X POST "http://localhost:8080/cache/put?key=myKey&value=myValue"
+
+// GET /cache/get
+// curl "http://localhost:8080/cache/get?key=myKey"
+
+// DELETE /cache/remove
+//curl -X DELETE "http://localhost:8080/cache/remove?key=myKey"
+
+
 package com.platformteam;
 
 import java.io.IOException;
