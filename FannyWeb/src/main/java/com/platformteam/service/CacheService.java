@@ -5,12 +5,12 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/cache")
-public class CacheController {
+public class CacheService {
 
     private final CacheService cacheService;
 
     @Autowired
-    public CacheController(CacheService cacheService) {
+    public CacheService(CacheService cacheService) {
         this.cacheService = cacheService;
     }
 

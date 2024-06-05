@@ -2,6 +2,8 @@ package com.platformteam;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import com.platformteam.service.CacheService;
+
 
 @RestController
 @RequestMapping("/cache")
