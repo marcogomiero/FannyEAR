@@ -11,4 +11,11 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
 
+    <servlet>
+        <display-name>CacheController Servlet</display-name>
+        <servlet-name>CacheServlet</servlet-name>
+        <servlet-class>com.platformteam.CacheServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
 </web-app>
