@@ -11,49 +11,68 @@
 package com.platformteam;
 
 import java.io.IOException;
-import jakarta.servlet.ServletContext;
+
+import com.platformteam.k8s.NamespaceService;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.servlet.ServletContext;
+
 
 @WebServlet("/testme")
 public class FannyServlet extends HttpServlet {
 
+    private final NamespaceService namespaceService;
+
+    @Autowired
+    public FannyServlet(NamespaceService namespaceService) {
+        this.namespaceService = namespaceService;
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        Long delay = Long.valueOf(req.getParameter("delay"));
+        String xRoutedBy = req.getHeader("x-routed-by");
+        String instana = req.getHeader("x-instana-endpoint");
+        String whoAmI = System.getenv("WHO_AM_I");
+        String nodeName = System.getenv("NODE_NAME");
+        String namespace = System.getenv("NAMESPACE");
+        String hostname = System.getenv("HOSTNAME");
+        resp.getWriter().write(createResponse(delay, xRoutedBy, whoAmI, nodeName, namespace, hostname, instana));
+    }
 
-        String delayParam = req.getParameter("delay");
-        int delay = 0;
-        if (delayParam != null) {
-            try {
-                delay = Integer.parseInt(delayParam);
-            }
-            catch (NumberFormatException ignored) {
-            }
-        }
-        if (delay > 0) {
+
+    private String createResponse(Long delay, String xRoutedBy,
+                                                  String whoAmI, String nodeName, String namespace, String hostname, String instanaHeader) {
+        if (delay != null && delay > 0) {
             try {
                 Thread.sleep(delay);
             } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                throw new IOException("Thread was interrupted", e);
+                System.out.println("Error occurred during sleep:\n" + e);
+                throw new RuntimeException(e);
             }
         }
 
-        resp.setContentType("text/plain");
-        resp.getWriter().write("      ,_,   \n");
-        resp.getWriter().write("     {O,o}  \n");
-        resp.getWriter().write("     /)__)  \n");
-        resp.getWriter().write("     ==\"==\n");
-        resp.getWriter().write("FANNY EAR Edition - A PT Project\n");
-        resp.getWriter().write("Java Version: " + System.getProperty("java.version") + "\n");
-
         ServletContext context = getServletContext();
         String serverInfo = context.getServerInfo();
-        resp.getWriter().write("Application Server: " + serverInfo + "\n");
-        resp.getWriter().write("\n-> You left me alone for: " + delay + " ms; (you know, this is the delay)\n");
-        resp.getWriter().write("-> Feel free to ask for more parameters.\n");
+
+        return ("{\n" +
+                "  \"message\": \"Hello World\",\n" +
+                "  \"RC\":\"" + "200" + "\",\n" +
+                "  \"HEADER\":\"" + xRoutedBy + "\",\n" +
+                "  \"INSTANA HEADER\":\"" + instanaHeader + "\",\n" +
+                "  \"WHO_AM_I\":\"" + whoAmI + "\",\n" +
+                "  \"NODE_NAME\":\"" + nodeName + "\",\n" +
+                "  \"HOSTNAME\":\"" + hostname + "\",\n" +
+                "  \"NAMESPACE\":\"" + namespace + "\",\n" +
+                "  \"ENDPOINT\":\"" + "/testme" + "\",\n" +
+                "  \"K8s NS\":\"" + namespaceService.getCurrentNamespace() + "\",\n" +
+                "  \"FRAMEWORK\":\"spring-boot " + org.springframework.boot.SpringBootVersion.getVersion() + "\",\n" +
+                "  \"JAVA_VERSION\":\"" + System.getProperty("java.version") + "\"\n" +
+                "  \"RUNNING ON\";\"" + serverInfo.getServerInfo() +"\"\n"+
+                "}");
     }
 
 }

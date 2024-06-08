@@ -3,7 +3,7 @@ services:
     image: quay.io/wildfly/wildfly:latest-jdk21
     volumes:
       - ./FannyWeb-1.1.0-SNAPSHOT.war:/opt/jboss/wildfly/standalone/deployments/FannyWeb-1.1.0-SNAPSHOT.war
-      - ./jboss_conf/standalone.xml:/opt/jboss/wildfly/standalone/configuration/standalone.xml
+      #- ./jboss_conf/standalone.xml:/opt/jboss/wildfly/standalone/configuration/standalone.xml
     user: jboss
     ports:
       - "8080:8080"

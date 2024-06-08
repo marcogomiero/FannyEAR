@@ -34,13 +34,13 @@ public class CacheServlet extends HttpServlet {
         String key = request.getParameter("key");
         logger.info("GET request received for key: {}", key);
         String value = cacheService.get(key);
-        // Invia la risposta al client
         response.setContentType("text/plain");
         try {
             response.getWriter().write(value);
         } catch (Exception e) {
             logger.error("Error while writing response", e);
         }
+        return null;
     }
 
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) {
