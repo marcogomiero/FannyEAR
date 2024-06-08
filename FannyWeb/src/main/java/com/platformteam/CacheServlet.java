@@ -1,10 +1,10 @@
 package com.platformteam;
 
+import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import com.platformteam.service.CacheService;
 
 import org.slf4j.Logger;
@@ -15,11 +15,12 @@ public class CacheServlet extends HttpServlet {
 
     private static final Logger logger = LoggerFactory.getLogger(CacheServlet.class);
 
-    private final CacheService cacheService;
+    private CacheService cacheService;
 
-    @Autowired
-    public CacheServlet(CacheService cacheService) {
-        this.cacheService = cacheService;
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        this.cacheService = new CacheService();
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
