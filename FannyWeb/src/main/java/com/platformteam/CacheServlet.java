@@ -40,7 +40,6 @@ public class CacheServlet extends HttpServlet {
         } catch (Exception e) {
             logger.error("Error while writing response", e);
         }
-        return null;
     }
 
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) {

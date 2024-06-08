@@ -19,6 +19,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import jakarta.servlet.ServletContext;
+import org.springframework.boot.SpringBootVersion;
 
 
 @WebServlet("/testme")
@@ -69,9 +70,9 @@ public class FannyServlet extends HttpServlet {
                 "  \"NAMESPACE\":\"" + namespace + "\",\n" +
                 "  \"ENDPOINT\":\"" + "/testme" + "\",\n" +
                 "  \"K8s NS\":\"" + namespaceService.getCurrentNamespace() + "\",\n" +
-                "  \"FRAMEWORK\":\"spring-boot " + org.springframework.boot.SpringBootVersion.getVersion() + "\",\n" +
+                "  \"FRAMEWORK\":\"spring-boot " + SpringBootVersion.getVersion() + "\",\n" +
                 "  \"JAVA_VERSION\":\"" + System.getProperty("java.version") + "\"\n" +
-                "  \"RUNNING ON\";\"" + serverInfo.getServerInfo() +"\"\n"+
+                "  \"RUNNING ON\";\"" + serverInfo +"\"\n"+
                 "}");
     }
 
