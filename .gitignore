@@ -36,3 +36,4 @@ build/
 
 ### Mac OS ###
 .DS_Store
+/FannyWeb-1.1.0-SNAPSHOT.war
