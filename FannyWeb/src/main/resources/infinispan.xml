@@ -11,10 +11,11 @@
         </serialization>
 
         <distributed-cache name="fanny">
-            <expiration lifespan="5000"/>
+            <expiration lifespan="30000"/>
             <groups enabled="true">
                 <grouper class="com.platformteam.config.LocationFanny$LocationGrouper"/>
             </groups>
         </distributed-cache>
+
     </cache-container>
 </infinispan>
