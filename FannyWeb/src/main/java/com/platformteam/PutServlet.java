@@ -37,7 +37,17 @@ public class PutServlet extends HttpServlet {
         }
     }
 
-    // Metodo per mettere un valore nella cache
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        String key = req.getParameter("key");
+        String value = req.getParameter("value");
+        if (key != null && value != null) {
+            put(key, value);
+            resp.getWriter().write("Stored key '" + key + "' with value '" + value + "'");
+        } else {
+            resp.getWriter().write("Key or value parameter is missing");
+        }
+    }
+
     public void put(String key, String value) {
         cache.put(key, value);
     }
