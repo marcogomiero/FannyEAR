@@ -352,13 +352,13 @@
         <subsystem xmlns="urn:wildfly:elytron-oidc-client:2.0"/>
         <subsystem xmlns="urn:wildfly:health:1.0" security-enabled="false"/>
         <subsystem xmlns:urn="urn:jboss:domain:infinispan:14.0">
-            <cache-container name="default">
-                <cache name="fanny-cache" mode="LOCAL" jndi-name="java:jboss/infinispan/cache/fanny-cache">
-                    <local-cache>
-                        <eviction strategy="LRU" max-entries="10000"/>
-                        <expiration milliseconds="600000"/>
-                    </local-cache>
-                </cache>
+            <cache-container name="fanny-container" default-cache="default">
+                <local-cache name="default">
+                    <locking isolation="REPEATABLE_READ"/>
+                </local-cache>
+                <local-cache name="fanny-cache">
+                    <locking isolation="REPEATABLE_READ"/>
+                </local-cache>
             </cache-container>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:io:4.0" default-worker="default">

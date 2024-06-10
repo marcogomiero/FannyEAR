@@ -1,40 +1,45 @@
-// PUT /cache/put
-// curl -X POST "http://localhost:8080/cache/put?key=myKey&value=myValue"
-
-// GET /cache/get
-// curl "http://localhost:8080/cache/get?key=myKey"
-
-// DELETE /cache/remove
-//curl -X DELETE "http://localhost:8080/cache/remove?key=myKey"
-
-
 package com.platformteam;
 
 import java.io.IOException;
 
-import com.platformteam.k8s.NamespaceService;
+import org.infinispan.Cache;
+import org.infinispan.manager.DefaultCacheManager;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
+
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import jakarta.servlet.ServletContext;
-import org.springframework.boot.SpringBootVersion;
 
+import org.springframework.boot.SpringBootVersion;
 
 @WebServlet("/testme")
 public class FannyServlet extends HttpServlet {
 
-    private final NamespaceService namespaceService;
+    private Cache<Object, Object> cache;
 
-    @Autowired
-    public FannyServlet(NamespaceService namespaceService) {
-        this.namespaceService = namespaceService;
+    @Override
+    public void init() {
+        SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
+        try {
+            cache = new DefaultCacheManager("infinispan.xml").getCache();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        Long delay = Long.valueOf(req.getParameter("delay"));
+        String delayParam = req.getParameter("delay");
+        Long delay = null;
+        if (delayParam != null && !delayParam.isEmpty()) {
+            try {
+                delay = Long.parseLong(delayParam);
+            } catch (NumberFormatException e) {
+               delay= 0L;
+            }
+        }
         String xRoutedBy = req.getHeader("x-routed-by");
         String instana = req.getHeader("x-instana-endpoint");
         String whoAmI = System.getenv("WHO_AM_I");
@@ -44,9 +49,7 @@ public class FannyServlet extends HttpServlet {
         resp.getWriter().write(createResponse(delay, xRoutedBy, whoAmI, nodeName, namespace, hostname, instana));
     }
 
-
-    private String createResponse(Long delay, String xRoutedBy,
-                                                  String whoAmI, String nodeName, String namespace, String hostname, String instanaHeader) {
+    private String createResponse(Long delay, String xRoutedBy, String whoAmI, String nodeName, String namespace, String hostname, String instanaHeader) {
         if (delay != null && delay > 0) {
             try {
                 Thread.sleep(delay);
@@ -69,11 +72,10 @@ public class FannyServlet extends HttpServlet {
                 "  \"HOSTNAME\":\"" + hostname + "\",\n" +
                 "  \"NAMESPACE\":\"" + namespace + "\",\n" +
                 "  \"ENDPOINT\":\"" + "/testme" + "\",\n" +
-                "  \"K8s NS\":\"" + namespaceService.getCurrentNamespace() + "\",\n" +
+                "  \"K8s NS\":\"" + System.getenv("NAMESPACE") + "\",\n" +
                 "  \"FRAMEWORK\":\"spring-boot " + SpringBootVersion.getVersion() + "\",\n" +
-                "  \"JAVA_VERSION\":\"" + System.getProperty("java.version") + "\"\n" +
-                "  \"RUNNING ON\";\"" + serverInfo +"\"\n"+
+                "  \"JAVA_VERSION\":\"" + System.getProperty("java.version") + "\",\n" +
+                "  \"RUNNING ON\":\"" + serverInfo + "\"\n"+
                 "}");
     }
-
 }
