@@ -11,7 +11,7 @@ public class LocationFanny {
 
         @Override
         public Class<String> getKeyType() {
-            return null;
+            return String.class;
         }
     }
 
