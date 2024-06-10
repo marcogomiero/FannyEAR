@@ -22,11 +22,6 @@ public class FannyServlet extends HttpServlet {
     @Override
     public void init() {
         SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
-        try {
-            cache = new DefaultCacheManager("infinispan.xml").getCache();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Override
@@ -61,6 +56,19 @@ public class FannyServlet extends HttpServlet {
 
         ServletContext context = getServletContext();
         String serverInfo = context.getServerInfo();
+
+
+        DefaultCacheManager cacheManager = null;
+        try {
+            cacheManager = new DefaultCacheManager("infinispan.xml");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        Cache<String, String> cache = cacheManager.getCache("fanny");
+
+        cache.put("key", "value");
+        System.out.println("Value from cache: " + cache.get("key"));
 
         return ("{\n" +
                 "  \"message\": \"Hello World\",\n" +

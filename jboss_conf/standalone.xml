@@ -351,16 +351,24 @@
         </subsystem>
         <subsystem xmlns="urn:wildfly:elytron-oidc-client:2.0"/>
         <subsystem xmlns="urn:wildfly:health:1.0" security-enabled="false"/>
-        <subsystem xmlns:urn="urn:jboss:domain:infinispan:14.0">
-            <cache-container name="fanny-container" default-cache="default">
-                <local-cache name="default">
+
+
+        <subsystem xmlns="urn:jboss:domain:infinispan:14.0">
+            <cache-container name="default" default-cache="default">
+                <transport />
+                <replicated-cache name="repl" />
+                <distributed-cache name="dist" owners="2" />
+            </cache-container>
+
+            <cache-container name="ejb" default-cache="persistent-timers">
+                <local-cache name="persistent-timers">
                     <locking isolation="REPEATABLE_READ"/>
-                </local-cache>
-                <local-cache name="fanny-cache">
-                    <locking isolation="REPEATABLE_READ"/>
+                    <transaction mode="BATCH"/>
                 </local-cache>
             </cache-container>
+
         </subsystem>
+
         <subsystem xmlns="urn:jboss:domain:io:4.0" default-worker="default">
             <worker name="default"/>
         </subsystem>
@@ -480,6 +488,7 @@
         <socket-binding name="management-https" interface="management" port="${jboss.management.https.port:9993}"/>
         <socket-binding name="txn-recovery-environment" port="4712"/>
         <socket-binding name="txn-status-manager" port="4713"/>
+        <socket-binding name="udp" port="7600" />
         <outbound-socket-binding name="mail-smtp">
             <remote-destination host="${jboss.mail.server.host:localhost}" port="${jboss.mail.server.port:25}"/>
         </outbound-socket-binding>

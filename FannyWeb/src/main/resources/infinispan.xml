@@ -1,16 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <infinispan
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="urn:infinispan:config:7.0 http://www.infinispan.org/schemas/infinispan-config-7.0.xsd"
-        xmlns="urn:infinispan:config:7.0">
+        xsi:schemaLocation="urn:infinispan:config:10.1 http://www.infinispan.org/schemas/infinispan-config-10.1.xsd"
+        xmlns="urn:infinispan:config:10.1">
 
-    <jgroups>
-        <stack-file name="udp" path="resources/jgroups.xml" />
-    </jgroups>
+    <cache-container default-cache="fanny">
+        <transport cluster="FannyCluster"/>
+        <serialization>
+            <context-initializer class="com.platformteam.config.SerializationContextInitializerImpl" />
+        </serialization>
 
-    <cache-container default-cache="default">
-        <transport stack="udp" node-name="${nodeName}" />
-        <replicated-cache name="repl" mode="SYNC" />
-        <distributed-cache name="dist" mode="SYNC" owners="2" />
+        <distributed-cache name="fanny">
+            <expiration lifespan="5000"/>
+            <groups enabled="true">
+                <grouper class="com.platformteam.LocationFanny$LocationGrouper"/>
+            </groups>
+        </distributed-cache>
     </cache-container>
-
 </infinispan>
