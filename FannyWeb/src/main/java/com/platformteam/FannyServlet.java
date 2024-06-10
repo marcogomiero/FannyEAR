@@ -22,6 +22,12 @@ public class FannyServlet extends HttpServlet {
     @Override
     public void init() {
         SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
+        try {
+            DefaultCacheManager cacheManager = new DefaultCacheManager("infinispan.xml");
+            cache = cacheManager.getCache("fanny");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -57,17 +63,6 @@ public class FannyServlet extends HttpServlet {
         ServletContext context = getServletContext();
         String serverInfo = context.getServerInfo();
 
-
-        DefaultCacheManager cacheManager = null;
-        try {
-            cacheManager = new DefaultCacheManager("infinispan.xml");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        Cache<String, String> cache = cacheManager.getCache("fanny");
-        cache.put("testCacheKey1", "Hello this is from the cache!");
-
         return ("{\n" +
                 "  \"message\": \"Hello World\",\n" +
                 "  \"RC\":\"" + "200" + "\",\n" +
@@ -82,7 +77,7 @@ public class FannyServlet extends HttpServlet {
                 "  \"FRAMEWORK\":\"spring-boot " + SpringBootVersion.getVersion() + "\",\n" +
                 "  \"JAVA_VERSION\":\"" + System.getProperty("java.version") + "\",\n" +
                 "  \"RUNNING ON\":\"" + serverInfo + "\"\n"+
-                "  \"INFINISPAN VALUE\":\"" + cache.get("testCacheKey1") + "\"\n"+
+                "  \"INFINISPAN CACHE IN USE\":\"" + cache.getName() + "\"\n"+
                 "}");
     }
 }

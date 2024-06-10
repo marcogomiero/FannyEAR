@@ -1,8 +1,6 @@
-package com.platformteam;
+package com.platformteam.config;
 
 import org.infinispan.distribution.group.Grouper;
-import org.infinispan.protostream.annotations.ProtoFactory;
-import org.infinispan.protostream.annotations.ProtoField;
 
 public class LocationFanny {
 
