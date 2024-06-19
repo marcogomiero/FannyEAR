@@ -9,7 +9,7 @@ import jakarta.servlet.http.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-@WebServlet("/testme")
+@WebServlet("/session")
 public class ClusteringDemoServlet extends HttpServlet {
     private static final Log log = LogFactory.getLog(ClusteringDemoServlet.class);
 
