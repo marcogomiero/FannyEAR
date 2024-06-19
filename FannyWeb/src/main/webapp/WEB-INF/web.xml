@@ -4,6 +4,8 @@
         <welcome-file>jsps/index.htm</welcome-file>
     </welcome-file-list>
 
+    <distributable/>
+
     <servlet>
         <display-name>Fanny Testme Servlet</display-name>
         <servlet-name>FannyServlet</servlet-name>
