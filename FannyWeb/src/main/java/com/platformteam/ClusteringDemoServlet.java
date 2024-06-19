@@ -1,4 +1,3 @@
-/* Decompiler 145ms, total 398ms, lines 50 */
 package com.platformteam;
 
 import java.io.IOException;
@@ -12,7 +11,6 @@ import org.apache.commons.logging.LogFactory;
 
 @WebServlet("/testme")
 public class ClusteringDemoServlet extends HttpServlet {
-    private static final String TIMESTAMP_KEY = "timestampKey";
     private static final Log log = LogFactory.getLog(ClusteringDemoServlet.class);
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -21,10 +19,10 @@ public class ClusteringDemoServlet extends HttpServlet {
         if (cookies != null) {
             log.info("Cookie info");
 
-            for(int i = 0; i < cookies.length; ++i) {
-                log.info("name = " + cookies[i].getName());
-                log.info("domain = " + cookies[i].getDomain());
-                log.info("val = " + cookies[i].getValue());
+            for (Cookie cookie : cookies) {
+                log.info("name = " + cookie.getName());
+                log.info("domain = " + cookie.getDomain());
+                log.info("val = " + cookie.getValue());
             }
         } else {
             log.info("No cookies set!");
