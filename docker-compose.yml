@@ -3,9 +3,6 @@ version: '3.8'
 services:
   wildfly1:
     image: quay.io/wildfly/wildfly:latest-jdk21
-    volumes:
-      - ./FannyWeb-1.1.0-SNAPSHOT.war:/opt/jboss/wildfly/standalone/deployments/FannyWeb-1.1.0-SNAPSHOT.war
-    user: jboss
     environment:
       - JGROUPS_CLUSTER_NAME=wildfly-cluster
       - JGROUPS_DISCOVERY_PROTOCOL=DNS_PING
@@ -14,14 +11,14 @@ services:
     ports:
       - "8080:8080"
       - "9990:9990"
+    volumes:
+      - ./FannyWeb-1.1.0-SNAPSHOT.war:/opt/jboss/wildfly/standalone/deployments/FannyWeb-1.1.0-SNAPSHOT.war
+      - ./jboss_conf/fanny/custom-standalone-ha.xml:/opt/jboss/wildfly/standalone/configuration/standalone-ha.xml
     networks:
       - wildfly-cluster
 
   wildfly2:
     image: quay.io/wildfly/wildfly:latest-jdk21
-    volumes:
-      - ./FannyWeb-1.1.0-SNAPSHOT.war:/opt/jboss/wildfly/standalone/deployments/FannyWeb-1.1.0-SNAPSHOT.war
-    user: jboss
     environment:
       - JGROUPS_CLUSTER_NAME=wildfly-cluster
       - JGROUPS_DISCOVERY_PROTOCOL=DNS_PING
@@ -30,6 +27,9 @@ services:
     ports:
       - "8081:8080"
       - "9991:9990"
+    volumes:
+      - ./FannyWeb-1.1.0-SNAPSHOT.war:/opt/jboss/wildfly/standalone/deployments/FannyWeb-1.1.0-SNAPSHOT.war
+      - ./jboss_conf/fanny/custom-standalone-ha.xml:/opt/jboss/wildfly/standalone/configuration/standalone-ha.xml
     networks:
       - wildfly-cluster
 
