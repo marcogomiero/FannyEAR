@@ -3,7 +3,6 @@ services:
     image: quay.io/wildfly/wildfly:latest-jdk21
     volumes:
       - ./FannyWeb-1.1.0-SNAPSHOT.war:/opt/jboss/wildfly/standalone/deployments/FannyWeb-1.1.0-SNAPSHOT.war
-      - ./clusteringdemo.war:/opt/jboss/wildfly/standalone/deployments/clusteringdemo.war
     user: jboss
     ports:
       - "8080:8080"

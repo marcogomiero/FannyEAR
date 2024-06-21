@@ -6,4 +6,8 @@
       http://www.jboss.org/j2ee/schema/jboss-web_5_1.xsd">
     <context-root>/fanny</context-root>
 
+    <replication-config>
+        <replication-granularity>SESSION</replication-granularity>
+    </replication-config>
+
 </jboss-web>
