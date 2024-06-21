@@ -36,7 +36,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
-            <version>3.3.0</version>
+            <version>3.3.1</version>
             <exclusions>
                 <exclusion>
                     <artifactId>snakeyaml</artifactId>
@@ -48,7 +48,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>
-            <version>3.3.0</version>
+            <version>3.3.1</version>
         </dependency>
         <dependency>
             <groupId>org.infinispan</groupId>
@@ -67,7 +67,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
-            <version>3.3.0</version>
+            <version>3.3.1</version>
             <exclusions>
                 <exclusion>
                     <artifactId>snakeyaml</artifactId>
