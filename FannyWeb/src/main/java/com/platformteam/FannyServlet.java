@@ -1,23 +1,30 @@
 package com.platformteam;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.lang.reflect.Type;
 
+import jakarta.servlet.http.*;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.infinispan.Cache;
 import org.infinispan.manager.DefaultCacheManager;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.ServletContext;
 
 import org.springframework.boot.SpringBootVersion;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 @WebServlet("/testme")
 public class FannyServlet extends HttpServlet {
 
-    private Cache<Object, Object> cache;
+    private Cache<String, String> cache;
+    private static final Log log = LogFactory.getLog(FannyServlet.class);
+    private static final Gson gson = new Gson();
 
     @Override
     public void init() {
@@ -38,7 +45,7 @@ public class FannyServlet extends HttpServlet {
             try {
                 delay = Long.parseLong(delayParam);
             } catch (NumberFormatException e) {
-               delay= 0L;
+                delay = 0L;
             }
         }
         String xRoutedBy = req.getHeader("x-routed-by");
@@ -47,10 +54,50 @@ public class FannyServlet extends HttpServlet {
         String nodeName = System.getenv("NODE_NAME");
         String namespace = System.getenv("NAMESPACE");
         String hostname = System.getenv("HOSTNAME");
-        resp.getWriter().write(createResponse(delay, xRoutedBy, whoAmI, nodeName, namespace, hostname, instana));
+        String cookieVal = "";
+
+        // Verifica che la cache sia inizializzata
+        if (cache != null) {
+            // Recupera i cookie dalla cache
+            String cachedCookiesJson = cache.get("cookies");
+
+            if (cachedCookiesJson != null) {
+                log.info("Retrieved cookies from cache");
+
+                Type cookieListType = new TypeToken<List<Cookie>>() {}.getType();
+                List<Cookie> cachedCookies = gson.fromJson(cachedCookiesJson, cookieListType);
+
+                for (Cookie cookie : cachedCookies) {
+                    log.info("name = " + cookie.getName());
+                    log.info("domain = " + (cookie.getDomain() != null ? cookie.getDomain() : "N/A"));
+                    log.info("val = " + cookie.getValue());
+                }
+            } else {
+                // Se i cookie non sono in cache, recuperali dalla richiesta e aggiungili alla cache
+                Cookie[] cookies = req.getCookies();
+                if (cookies != null) {
+                    log.info("Storing cookies to cache");
+
+                    for (Cookie cookie : cookies) {
+                        log.info("name = " + cookie.getName());
+                        log.info("domain = " + (cookie.getDomain() != null ? cookie.getDomain() : "N/A"));
+                        log.info("val = " + cookie.getValue());
+                        cookieVal = cookie.getValue();
+                    }
+
+                    String cookiesJson = gson.toJson(Arrays.asList(cookies));
+                    cache.put("cookies", cookiesJson);
+                } else {
+                    log.info("No cookies set!");
+                }
+            }
+        } else {
+            log.error("Cache is not initialized");
+        }
+        resp.getWriter().write(createResponse(delay, xRoutedBy, whoAmI, nodeName, namespace, hostname, instana, cookieVal));
     }
 
-    private String createResponse(Long delay, String xRoutedBy, String whoAmI, String nodeName, String namespace, String hostname, String instanaHeader) {
+    private String createResponse(Long delay, String xRoutedBy, String whoAmI, String nodeName, String namespace, String hostname, String instanaHeader, String cookeiVal) {
         if (delay != null && delay > 0) {
             try {
                 Thread.sleep(delay);
@@ -62,6 +109,7 @@ public class FannyServlet extends HttpServlet {
 
         ServletContext context = getServletContext();
         String serverInfo = context.getServerInfo();
+        String cacheName = (cache != null) ? cache.getName() : "No cache";
 
         return ("{\n" +
                 "  \"message\": \"Hello World\",\n" +
@@ -76,8 +124,9 @@ public class FannyServlet extends HttpServlet {
                 "  \"K8s NS\":\"" + System.getenv("NAMESPACE") + "\",\n" +
                 "  \"FRAMEWORK\":\"spring-boot " + SpringBootVersion.getVersion() + "\",\n" +
                 "  \"JAVA_VERSION\":\"" + System.getProperty("java.version") + "\",\n" +
-                "  \"RUNNING ON\":\"" + serverInfo + "\"\n"+
-                "  \"INFINISPAN CACHE IN USE\":\"" + cache.getName() + "\"\n"+
+                "  \"RUNNING ON\":\"" + serverInfo + "\",\n" +
+                "  \"INFINISPAN CACHE IN USE\":\"" + cacheName + "\"\n" +
+                "  \"COOKIE VAL\":\"" + cookeiVal + "\"\n" +
                 "}");
     }
 }
